@@ -8,4 +8,10 @@ public interface UserService {
     User createUser(UserModel userModel);
 
     User getLoggedInUser();
+
+    User readUser();
+
+     User updateUser(UserModel user);
+
+    void delete();
 }

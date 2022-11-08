@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(ResourcesNotFoundException.class)
-    public ResponseEntity<ErrorObject> handleNewsNotFoundException(ResourcesNotFoundException ex, WebRequest request){
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorObject> handleNewsNotFoundException(ResourceNotFoundException ex, WebRequest request){
         ErrorObject errorObject = new ErrorObject();
         errorObject.setStatusCode(HttpStatus.NOT_FOUND.value());
         errorObject.setMessage(ex.getMessage());

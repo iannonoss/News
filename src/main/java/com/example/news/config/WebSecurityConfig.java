@@ -1,5 +1,5 @@
 package com.example.news.config;
-import com.example.news.security.CustomUserDetailsService;
+import com.example.news.security.AuthService;
 import com.example.news.security.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
 
     @Autowired
-    private CustomUserDetailsService userDetailsService;
+    private AuthService userDetailsService;
 
     @Bean
     public JwtRequestFilter authenticationJwtTokenFilter(){
@@ -35,7 +35,7 @@ public class WebSecurityConfig {
 
          http
                 .csrf().disable().authorizeRequests()
-                .antMatchers("/login", "/register")
+                .antMatchers("/login", "/register-user", "register-author")
                 .permitAll().anyRequest().authenticated()
                 .and().
                  sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

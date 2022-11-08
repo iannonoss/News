@@ -1,10 +1,13 @@
 package com.example.news.controller;
 
 import com.example.news.dto.AuthModel;
+import com.example.news.dto.AuthorModel;
 import com.example.news.dto.UserModel;
+import com.example.news.entity.Author;
 import com.example.news.entity.JwtResponse;
 import com.example.news.entity.User;
-import com.example.news.security.CustomUserDetailsService;
+import com.example.news.security.AuthService;
+import com.example.news.service.AuthorService;
 import com.example.news.service.UserService;
 import com.example.news.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +30,10 @@ public class AuthController {
     @Autowired
     private UserService userService;
     @Autowired
-    private CustomUserDetailsService userDetailsService;
+    private AuthService userDetailsService;
+
+    @Autowired
+    private AuthorService authorService;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -54,10 +60,17 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<User> save(@Valid @RequestBody UserModel userModel){
+    @PostMapping("/register-user")
+    public ResponseEntity<User> saveUser(@Valid @RequestBody UserModel userModel){
         return new ResponseEntity<User>(userService.createUser(userModel), HttpStatus.CREATED);
     }
+
+    @PostMapping("/register-author")
+    public ResponseEntity<Author> saveAuthor(@Valid @RequestBody AuthorModel authorModel){
+        return new ResponseEntity<Author>(authorService.createAuthor(authorModel), HttpStatus.CREATED);
+    }
+
+
 
 
 }

@@ -1,11 +1,11 @@
 package com.example.news.exception;
 
-public class ResourcesNotFoundException extends RuntimeException{
+public class ResourceNotFoundException extends RuntimeException{
 
 
         private static final long serialVersionUID = 1L;
 
-        public ResourcesNotFoundException(String message){
+        public ResourceNotFoundException(String message){
             super(message);
         }
 
