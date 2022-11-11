@@ -10,9 +10,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Optional;
-
 
 @Service
 public class AuthService implements UserDetailsService {
@@ -22,14 +22,29 @@ public class AuthService implements UserDetailsService {
     @Autowired
     private AuthorRepository authorRepository;
 
-    @Override
+
+   /* @Override
+    @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<User> existingUser = userRepository.findUserByEmail(email);
         if(existingUser.isPresent()) {
-            return new org.springframework.security.core.userdetails.User(existingUser.get().getEmail(), existingUser.get().getPassword(), new ArrayList<>());
+            return CustomUserDetails.build(existingUser.get());
         }else {
             Author existingAuthor = authorRepository.findAuthorByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found for the email:"+email));
             return new org.springframework.security.core.userdetails.User(existingAuthor.getEmail(), existingAuthor.getPassword(), new ArrayList<>());
         }
+    }*/
+
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User existingUser = userRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User with the email: " + email + " not found."));
+        return CustomUserDetails.build(existingUser);
     }
+
+
+
+
+
+
 }

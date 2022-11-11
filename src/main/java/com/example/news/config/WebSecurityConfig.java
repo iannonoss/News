@@ -4,8 +4,10 @@ import com.example.news.security.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -18,9 +20,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    @Autowired
-    private AuthService userDetailsService;
-
     @Bean
     public JwtRequestFilter authenticationJwtTokenFilter(){
         return new JwtRequestFilter();
@@ -31,13 +30,16 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
          http
                 .csrf().disable().authorizeRequests()
-                .antMatchers("/login", "/register-user", "register-author")
-                .permitAll().anyRequest().authenticated()
-                .and().
+                .antMatchers("/login", "/register-user", "/refresh-token", "/register-author", "/register-mod").permitAll()
+                 .antMatchers(HttpMethod.GET,"/profile").access("hasRole('ROLE_USER')")
+                 .antMatchers(HttpMethod.PUT,"/profile").access("hasRole('ROLE_USER')")
+                 .antMatchers("/deactivate").access("hasRole('ROLE_USER')")
+                 .antMatchers(HttpMethod.POST,"/news").access("hasRole('ROLE_AUTHOR')")
+                 .anyRequest().authenticated()
+                 .and().
                  sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                  http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
                  http.httpBasic();
@@ -45,11 +47,11 @@ public class WebSecurityConfig {
     }
 
     private final AuthenticationConfiguration authenticationConfiguration;
+
     @Bean
-    public AuthenticationManager userDetailsService() throws Exception{
+    public AuthenticationManager userDetailsService() throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder(){

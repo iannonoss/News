@@ -12,4 +12,5 @@ public interface AuthorService {
 
     Author getLoggedInAuthor();
 
+    Author searchAuthorByEmail(String email);
 }

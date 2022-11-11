@@ -32,7 +32,7 @@ public class AuthorModel {
     @NotBlank
     private String biography;
 
-    @NotBlank(message = "Category shuld not be null")
+    @NotBlank(message = "Category should not be null")
     private String category;
 
     @NotNull(message = "Author's subscription price amount should be not null")

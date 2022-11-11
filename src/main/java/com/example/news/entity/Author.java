@@ -17,34 +17,21 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "tbl_author")
-public class Author {
+public class Author extends User{
+
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idA;
-
-
-    private String name;
-
-    private String surname;
-
-    @Column(unique = true)
-    private String email;
-
-    private String password;
-
-    private LocalDate birthDate;
-
-    private String biography;
+    @GeneratedValue(strategy = GenerationType.TABLE)
+    private Long id;
 
     private String category;
 
     private BigDecimal subscription_price;
 
-
     @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
     private Set<Subscription> subscriptions;
+
 
 
 }
