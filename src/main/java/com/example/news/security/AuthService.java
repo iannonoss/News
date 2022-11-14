@@ -1,18 +1,15 @@
 package com.example.news.security;
 
-import com.example.news.entity.Author;
+import com.example.news.entity.Reader;
 import com.example.news.entity.User;
 import com.example.news.repository.AuthorRepository;
+import com.example.news.repository.ReaderRepository;
 import com.example.news.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Optional;
 
 @Service
 public class AuthService implements UserDetailsService {

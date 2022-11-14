@@ -14,7 +14,7 @@ public interface NewsRepository extends JpaRepository<News, Long> {
 
     Page<News> findByCategory(String category, Pageable page);
 
-    Page<News> findByAuthor(String author, Pageable pageable);
+    //Page<News> findByAuthor(String author, Pageable pageable);
 
     Page<News> findByDateBetween( Date startDate, Date endDate, Pageable page);
 

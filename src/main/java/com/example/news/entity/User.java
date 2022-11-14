@@ -6,24 +6,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity
-@Table(name = "tbl_users")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class User {
-
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+    @Entity
+    @Table(name = "tbl_user")
+    public class User {
 
         @Id
-        //@GeneratedValue(strategy = GenerationType.IDENTITY)
         @GeneratedValue(strategy = GenerationType.TABLE)
         private Long id;
+
 
         private String name;
 
@@ -44,4 +42,7 @@ public class User {
         private Set<Role> roles = new HashSet<>();
 
 
+
     }
+
+

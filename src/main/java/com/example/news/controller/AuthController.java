@@ -3,16 +3,15 @@ package com.example.news.controller;
 import com.example.news.dto.*;
 import com.example.news.entity.Author;
 import com.example.news.entity.JwtResponse;
-import com.example.news.entity.User;
+import com.example.news.entity.Reader;
 import com.example.news.service.AuthorService;
 import com.example.news.service.IAuthService;
-import com.example.news.service.UserService;
+import com.example.news.service.ReaderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -21,7 +20,7 @@ import javax.validation.Valid;
 public class AuthController {
 
     @Autowired
-    private UserService userService;
+    private ReaderService userService;
 
     @Autowired
     private AuthorService authorService;
@@ -37,14 +36,14 @@ public class AuthController {
     }
 
     @PostMapping("/register-user")
-    public ResponseEntity<User> saveUser(@Valid @RequestBody UserModel userModel){
+    public ResponseEntity<Reader> saveUser(@Valid @RequestBody UserModel userModel){
         String role = "user";
-        return new ResponseEntity<User>(userService.createUser(userModel, role ), HttpStatus.CREATED);
+        return new ResponseEntity<Reader>(userService.createUser(userModel, role ), HttpStatus.CREATED);
     }
     @PostMapping("/register-mod")
-    public ResponseEntity<User> saveMod(@Valid @RequestBody UserModel userModel){
+    public ResponseEntity<Reader> saveMod(@Valid @RequestBody UserModel userModel){
         String role = "mod";
-        return new ResponseEntity<User>(userService.createUser(userModel, role ), HttpStatus.CREATED);
+        return new ResponseEntity<Reader>(userService.createUser(userModel, role ), HttpStatus.CREATED);
     }
 
     @PostMapping("/register-author")

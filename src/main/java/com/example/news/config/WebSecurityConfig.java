@@ -38,6 +38,10 @@ public class WebSecurityConfig {
                  .antMatchers(HttpMethod.PUT,"/profile").access("hasRole('ROLE_USER')")
                  .antMatchers("/deactivate").access("hasRole('ROLE_USER')")
                  .antMatchers(HttpMethod.POST,"/news").access("hasRole('ROLE_AUTHOR')")
+                 .antMatchers(HttpMethod.PATCH,"/news/update/{id}/{title}").access("hasRole('ROLE_AUTHOR')")
+                 .antMatchers(HttpMethod.PUT,"/news/updateAll/{id}").access("hasRole('ROLE_AUTHOR')")
+                 .antMatchers(HttpMethod.DELETE,"/news/delete").access("hasRole('ROLE_AUTHOR')")
+                 .antMatchers("/news/**").access("hasRole('ROLE_AUTHOR')")
                  .anyRequest().authenticated()
                  .and().
                  sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

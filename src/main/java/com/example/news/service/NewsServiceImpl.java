@@ -1,6 +1,5 @@
 package com.example.news.service;
 
-import com.example.news.entity.Author;
 import com.example.news.entity.News;
 import com.example.news.exception.ResourceNotFoundException;
 import com.example.news.repository.NewsRepository;
@@ -9,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +19,7 @@ public class NewsServiceImpl implements INewsService {
     private AuthorService authorService;
 
     @Autowired
-    private UserService userService;
+    private ReaderService readerService;
 
 
     @Override
@@ -39,10 +37,11 @@ public class NewsServiceImpl implements INewsService {
     }
 
     @Override
-    public News saveNewsDetails(News news) {
-        news.setAuthor((Author) userService.getLoggedInUser());
+    public News saveAllNewsDetails(News news) {
+        news.setAuthor(authorService.getLoggedInAuthor());
         return newsRepository.save(news);
     }
+
 
     @Override
     public News updateNewsDetails(News news, Long id) {
@@ -56,12 +55,21 @@ public class NewsServiceImpl implements INewsService {
 
     }
 
+
     @Override
     public void deleteNewsById(Long id) {
         News news = getNewsById(id);
         newsRepository.delete(news);
     }
 
+
+    @Override
+    public List<News> readByCategory(String category, Pageable page) {
+        return newsRepository.findByCategory(category, page).toList();
+    }
+
+
+/*
     @Override
     public List<News> readByCategory(String category, Pageable page) {
         return newsRepository.findByCategory(category, page).toList();
@@ -82,5 +90,6 @@ public class NewsServiceImpl implements INewsService {
         }
         return newsRepository.findByDateBetween(startDate, endDate, page).toList();
     }
+*/
 
 }

@@ -26,13 +26,6 @@ public class SetUpDataConfig implements ApplicationListener<ContextRefreshedEven
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if (alreadySetup)
             return;
-       /* String roleU = "ROLE_USER";
-        String roleM = "ROLE_MODERATOR";
-        String roleA = "ROLE_AUTHOR";
-        ERole eRole = ERole.ROLE_AUTHOR;
-        ERole eRoleU = ERole.valueOf(roleU);
-        ERole eRoleM = ERole.valueOf(roleM);
-        ERole eRoleA = ERole.valueOf(roleA);*/
         createRoleIfNotFound(ERole.ROLE_USER);
         createRoleIfNotFound(ERole.ROLE_MODERATOR);
         createRoleIfNotFound(ERole.ROLE_AUTHOR);

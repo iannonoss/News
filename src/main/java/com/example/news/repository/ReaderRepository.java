@@ -1,19 +1,17 @@
 package com.example.news.repository;
 
-import com.example.news.entity.Author;
+import com.example.news.entity.Reader;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface AuthorRepository extends JpaRepository<Author, Long> {
+public interface ReaderRepository extends JpaRepository<Reader, Long> {
 
-    Optional<Author> findAuthorByEmail(String email);
+    Optional<Reader> findByEmail(String email);
 
     Boolean existsByEmail(String email);
 
-    Optional<Author> findByEmail(String email);
-    
 
 }

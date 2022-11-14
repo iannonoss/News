@@ -2,15 +2,12 @@ package com.example.news.service;
 
 import com.example.news.dto.AuthorModel;
 import com.example.news.dto.ERole;
-import com.example.news.dto.UserModel;
 import com.example.news.entity.Author;
 import com.example.news.entity.Role;
-import com.example.news.entity.User;
 import com.example.news.exception.ItemAlreadyExistsException;
 import com.example.news.exception.ResourceNotFoundException;
 import com.example.news.repository.AuthorRepository;
 import com.example.news.repository.RoleRepository;
-import com.example.news.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -35,10 +32,12 @@ public class AuthorServiceImpl implements AuthorService{
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private  UserService userService;
 
     @Override
     public Author createAuthor(AuthorModel authorModel) {
-        if(authorRepository.existsByEmail(authorModel.getEmail())) {
+        if(userService.existUserByEmail(authorModel.getEmail())) {
             throw new ItemAlreadyExistsException("Author is already registered with email:" + authorModel.getEmail());
         }
         Author newAuthor = new Author();

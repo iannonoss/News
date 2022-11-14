@@ -1,6 +1,5 @@
 package com.example.news.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,14 +20,14 @@ public class Subscription {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "idA")
-    @JsonIgnore
+    @JoinColumn(name = "reader_id")
+    private Reader reader;
+
+
+    @ManyToOne
+    @JoinColumn(name = "author_id")
     private Author author;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "idU")
-    @JsonIgnore
-    private User user;
     @NotNull
     private Boolean state_subscription;
 
@@ -40,7 +39,6 @@ public class Subscription {
 
 
 
-    //
 
 
 }

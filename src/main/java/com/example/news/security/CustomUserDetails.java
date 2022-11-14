@@ -1,6 +1,6 @@
 package com.example.news.security;
 
-import com.example.news.entity.Author;
+import com.example.news.entity.Reader;
 import com.example.news.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
