@@ -1,7 +1,6 @@
 package com.example.news.service;
 
 import com.example.news.dto.RefreshTokenRequest;
-import com.example.news.entity.Reader;
 import com.example.news.entity.RefreshToken;
 import com.example.news.entity.User;
 import com.example.news.exception.ResourceNotFoundException;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class RefreshRefreshTokenServiceImpl implements RefreshTokenService {
+public class RefreshRefreshTokenServiceImpl implements IRefreshTokenService {
 
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;

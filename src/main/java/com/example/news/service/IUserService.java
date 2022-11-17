@@ -2,7 +2,7 @@ package com.example.news.service;
 
 import com.example.news.entity.User;
 
-public interface UserService {
+public interface IUserService {
     Boolean existUserByEmail(String email);
 
     User getLoggedInUser();

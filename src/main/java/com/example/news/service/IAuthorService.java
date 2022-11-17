@@ -3,13 +3,18 @@ package com.example.news.service;
 import com.example.news.dto.AuthorModel;
 import com.example.news.entity.Author;
 
-public interface AuthorService {
+public interface IAuthorService {
 
     Author createAuthor(AuthorModel authorModel);
 
-    Author readAuthor();
+    Author readAuthor(Long authorId);
 
     Author getLoggedInAuthor();
 
-    Author searchAuthorByEmail(String email);
+    Author getAuthorFromEmail(String email);
+
+    void delete(Author author);
+
+
+
 }

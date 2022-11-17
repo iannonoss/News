@@ -4,7 +4,6 @@ import com.example.news.entity.News;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.Date;
 import java.util.List;
 
 public interface INewsService {
@@ -19,9 +18,17 @@ public interface INewsService {
 
     //News updatePartialNewsDetails(News news, Long id);
 
+    News updateNews(News news, Long id);
+
     void deleteNewsById(Long id);
 
     List<News> readByCategory(String category, Pageable page);
+
+    //News readNews();
+
+    List<News> readNewsByAuthor(Long id, Pageable page);
+
+
 /*
     List<News> readByCategory(String category, Pageable page);
 

@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -32,6 +31,11 @@ public class NewsController {
           return   newsService.getNewsById(id);
     }
 
+    @GetMapping("/author/newsList/{id}")
+    public ResponseEntity<List<News>> readNews(@PathVariable Long id, Pageable pageable){
+        return  new ResponseEntity<>(newsService.readNewsByAuthor(id, pageable), HttpStatus.OK);
+    }
+
 
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping("/news")
@@ -41,18 +45,10 @@ public class NewsController {
 
 
     @PutMapping("/news/update/{id}")
-    public ResponseEntity<News> updateUserPartially(
+    public ResponseEntity<News> updateNewsPartially(
             @PathVariable(value = "id") Long id,
             @Valid @RequestBody News news) throws ResourceNotFoundException {
-        News newNews = newsRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found on :: "+ id));
-
-        newNews.setTitle(news.getTitle());
-        newNews.setCategory(newNews.getCategory());
-        newNews.setDescription(newNews.getDescription());
-        newNews.setDate(newNews.getDate());
-        final News updateNews = newsRepository.save(newNews);
-        return ResponseEntity.ok(updateNews);
+        return ResponseEntity.ok(newsService.updateNews(news, id));
     }
 
 

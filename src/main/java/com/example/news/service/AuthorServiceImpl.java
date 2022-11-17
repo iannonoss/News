@@ -20,7 +20,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
-public class AuthorServiceImpl implements AuthorService{
+public class AuthorServiceImpl implements IAuthorService {
 
     @Autowired
     private AuthorRepository authorRepository;
@@ -33,11 +33,11 @@ public class AuthorServiceImpl implements AuthorService{
     private RoleRepository roleRepository;
 
     @Autowired
-    private  UserService userService;
+    private IUserService IUserService;
 
     @Override
     public Author createAuthor(AuthorModel authorModel) {
-        if(userService.existUserByEmail(authorModel.getEmail())) {
+        if(IUserService.existUserByEmail(authorModel.getEmail())) {
             throw new ItemAlreadyExistsException("Author is already registered with email:" + authorModel.getEmail());
         }
         Author newAuthor = new Author();
@@ -52,8 +52,7 @@ public class AuthorServiceImpl implements AuthorService{
     }
 
     @Override
-    public Author readAuthor() {
-        Long authorId = getLoggedInAuthor().getId();
+    public Author readAuthor(Long authorId) {
         return authorRepository.findById(authorId).orElseThrow(() -> new ResourceNotFoundException("Author not found for the id:"+authorId));
     }
 
@@ -64,9 +63,17 @@ public class AuthorServiceImpl implements AuthorService{
         return authorRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Author not found for the email;"+email));
     }
 
+
     @Override
-    public Author searchAuthorByEmail(String email) {
-        return authorRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("Author with the email:" + email + "not found."));
+    public Author getAuthorFromEmail(String email) {
+        return authorRepository.findByEmail(email).orElseThrow(
+                () -> new ResourceNotFoundException("User not found with email: " + email));
     }
+
+    @Override
+    public void delete(Author author) {
+        authorRepository.delete(author);
+    }
+
 
 }

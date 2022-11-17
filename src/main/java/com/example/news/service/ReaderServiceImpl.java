@@ -11,9 +11,6 @@ import com.example.news.repository.ReaderRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
-public class ReaderServiceImpl implements ReaderService {
+public class ReaderServiceImpl implements IReaderService {
 
     @Autowired
     ReaderRepository readerRepository;
@@ -36,13 +33,13 @@ public class ReaderServiceImpl implements ReaderService {
     AuthenticationManager authenticationManager;
 
     @Autowired
-    private  AuthorService authorService;
+    private IAuthorService IAuthorService;
 
     @Autowired
-    private UserService userService;
+    private IUserService IUserService;
 
-    public Reader createUser(UserModel userModel, String setRole) {
-        if (userService.existUserByEmail(userModel.getEmail())) {
+    public Reader createReader(UserModel userModel, ERole setRole) {
+        if (IUserService.existUserByEmail(userModel.getEmail())) {
             throw new ItemAlreadyExistsException
                     ("User is already register with email: "
                             + userModel.getEmail());
@@ -50,34 +47,26 @@ public class ReaderServiceImpl implements ReaderService {
         Reader newReader = new Reader();
         BeanUtils.copyProperties(userModel, newReader);
         newReader.setPassword(passwordEncoder.encode(newReader.getPassword()));
-
-        Set<Role> roles = new HashSet<>();
-
-        switch (setRole) {
-            case "mod":
-                Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
-                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                roles.add(modRole);
-
-                break;
-            default:
-                Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                roles.add(userRole);
-        }
-        newReader.setRoles(roles);
+        this.setReaderRole(setRole,newReader);
         return readerRepository.save(newReader);
     }
 
+    private void setReaderRole(ERole role, Reader reader){
+        Role targetRole = roleRepository.findByName(role).orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        Set<Role> roles = new HashSet<>();
+        roles.add(targetRole);
+        reader.setRoles(roles);
+    }
+
     @Override
-    public Reader readUser() {
-        Long userId = userService.getLoggedInUser().getId();
+    public Reader readReader() {
+        Long userId = IUserService.getLoggedInUser().getId();
         return readerRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found for the id:"+userId));
     }
 
     @Override
-    public Reader updateUser(UserModel user) {
-        Reader existingReader = readUser();
+    public Reader updateReader(UserModel user) {
+        Reader existingReader = readReader();
         existingReader.setName(user.getName() != null ? user.getName() : existingReader.getName());
         existingReader.setSurname(user.getSurname() != null ? user.getSurname() : existingReader.getSurname());
         existingReader.setEmail(user.getEmail() != null ? user.getEmail() : existingReader.getEmail());
@@ -87,9 +76,14 @@ public class ReaderServiceImpl implements ReaderService {
         return readerRepository.save(existingReader);
     }
 
-    public void delete() {
-        Reader existingReader = readUser();
-        readerRepository.delete(existingReader);
+    public void delete(Reader reader) {
+        readerRepository.delete(reader);
+    }
+
+    @Override
+    public Reader getUserFromEmail(String email) {
+        return readerRepository.findByEmail(email).orElseThrow(
+                () -> new ResourceNotFoundException("User not found with email: " + email));
     }
 
 

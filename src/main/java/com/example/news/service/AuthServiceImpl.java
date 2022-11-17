@@ -5,7 +5,6 @@ import com.example.news.dto.LoginResponse;
 import com.example.news.dto.RefreshTokenRequest;
 import com.example.news.entity.JwtResponse;
 import com.example.news.entity.RefreshToken;
-import com.example.news.entity.Reader;
 import com.example.news.entity.User;
 import com.example.news.security.AuthService;
 import com.example.news.util.JwtTokenUtil;
@@ -24,7 +23,7 @@ public class AuthServiceImpl implements IAuthService{
 
 
     @Autowired
-    private RefreshTokenService refreshTokenService;
+    private IRefreshTokenService IRefreshTokenService;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -33,7 +32,7 @@ public class AuthServiceImpl implements IAuthService{
     private AuthService userDetailsService;
 
     @Autowired
-    private UserService userService;
+    private IUserService IUserService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -47,8 +46,8 @@ public class AuthServiceImpl implements IAuthService{
         final String token = jwtTokenUtil.generateToken(userDetails);
 
 
-        User user = userService.getUserFromEmail(authModel.getEmail());
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken(user);
+        User user = IUserService.getUserFromEmail(authModel.getEmail());
+        RefreshToken refreshToken = IRefreshTokenService.createRefreshToken(user);
 
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setJwt(new JwtResponse(token).getJwtToken());
@@ -69,7 +68,7 @@ public class AuthServiceImpl implements IAuthService{
 
     @Override
     public String refreshToken(RefreshTokenRequest refreshTokenRequest) {
-        UserDetails userDetails =refreshTokenService.getUserDetailsFromToken(refreshTokenRequest);
+        UserDetails userDetails = IRefreshTokenService.getUserDetailsFromToken(refreshTokenRequest);
         return jwtTokenUtil.generateToken(userDetails);
     }
 

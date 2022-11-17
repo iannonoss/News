@@ -4,11 +4,12 @@ import com.example.news.dto.ERole;
 import com.example.news.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 import static org.hibernate.loader.Loader.SELECT;
-
+@Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
     Optional<Role> findByName(ERole name);

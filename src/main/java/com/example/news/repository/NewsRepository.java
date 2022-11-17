@@ -1,5 +1,6 @@
 package com.example.news.repository;
 
+import com.example.news.entity.Author;
 import com.example.news.entity.News;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +15,7 @@ public interface NewsRepository extends JpaRepository<News, Long> {
 
     Page<News> findByCategory(String category, Pageable page);
 
-    //Page<News> findByAuthor(String author, Pageable pageable);
+    Page<News> findByAuthor(Author author, Pageable pageable);
 
     Page<News> findByDateBetween( Date startDate, Date endDate, Pageable page);
 
