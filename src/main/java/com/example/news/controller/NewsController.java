@@ -18,9 +18,6 @@ public class NewsController {
     @Autowired
     private INewsService newsService;
 
-    @Autowired
-    private NewsRepository newsRepository;
-
     @GetMapping("/list_of_news")
     public List<News> getAllNews(Pageable page){
         return  newsService.getAllNews(page).toList();

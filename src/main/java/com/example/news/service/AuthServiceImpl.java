@@ -6,6 +6,7 @@ import com.example.news.dto.RefreshTokenRequest;
 import com.example.news.entity.JwtResponse;
 import com.example.news.entity.RefreshToken;
 import com.example.news.entity.User;
+import com.example.news.repository.AuthorRepository;
 import com.example.news.security.AuthService;
 import com.example.news.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,7 @@ public class AuthServiceImpl implements IAuthService{
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
 
 
     @Override
@@ -71,6 +73,7 @@ public class AuthServiceImpl implements IAuthService{
         UserDetails userDetails = IRefreshTokenService.getUserDetailsFromToken(refreshTokenRequest);
         return jwtTokenUtil.generateToken(userDetails);
     }
+
 
 
 }

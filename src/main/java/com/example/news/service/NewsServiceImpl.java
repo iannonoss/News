@@ -53,7 +53,6 @@ public class NewsServiceImpl implements INewsService {
             existingNews.setTitle(news.getTitle() != null ? news.getTitle() : existingNews.getTitle());
             existingNews.setCategory(news.getCategory() != null ? news.getCategory() : existingNews.getCategory());
             existingNews.setDescription(news.getDescription() != null ? news.getDescription() : existingNews.getDescription());
-            existingNews.setDate(news.getDate() != null ? news.getDate() : existingNews.getDate());
             return newsRepository.save(existingNews);
         } else throw new MismatchedIdException("Mismatched Id, Author not authorized ");
 
@@ -67,7 +66,6 @@ public class NewsServiceImpl implements INewsService {
         newNews.setTitle(news.getTitle());
         newNews.setCategory(newNews.getCategory());
         newNews.setDescription(newNews.getDescription());
-        newNews.setDate(newNews.getDate());
         return  newsRepository.save(newNews);
         } else throw new MismatchedIdException("Mismatched Id, Author not authorized ");
 

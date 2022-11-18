@@ -2,6 +2,7 @@ package com.example.news.service;
 
 import com.example.news.dto.AuthorModel;
 import com.example.news.entity.Author;
+import com.example.news.exception.NotFoundEx;
 
 public interface IAuthorService {
 
@@ -14,6 +15,10 @@ public interface IAuthorService {
     Author getAuthorFromEmail(String email);
 
     void delete(Author author);
+
+    boolean existByIdAuthor(Long id) throws NotFoundEx;
+
+     Author findAuthorById(Long id);
 
 
 

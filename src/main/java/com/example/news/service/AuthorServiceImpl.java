@@ -5,6 +5,7 @@ import com.example.news.dto.ERole;
 import com.example.news.entity.Author;
 import com.example.news.entity.Role;
 import com.example.news.exception.ItemAlreadyExistsException;
+import com.example.news.exception.NotFoundEx;
 import com.example.news.exception.ResourceNotFoundException;
 import com.example.news.repository.AuthorRepository;
 import com.example.news.repository.RoleRepository;
@@ -37,7 +38,7 @@ public class AuthorServiceImpl implements IAuthorService {
 
     @Override
     public Author createAuthor(AuthorModel authorModel) {
-        if(IUserService.existUserByEmail(authorModel.getEmail())) {
+        if (IUserService.existUserByEmail(authorModel.getEmail())) {
             throw new ItemAlreadyExistsException("Author is already registered with email:" + authorModel.getEmail());
         }
         Author newAuthor = new Author();
@@ -53,14 +54,19 @@ public class AuthorServiceImpl implements IAuthorService {
 
     @Override
     public Author readAuthor(Long authorId) {
-        return authorRepository.findById(authorId).orElseThrow(() -> new ResourceNotFoundException("Author not found for the id:"+authorId));
+        return authorRepository.findById(authorId).orElseThrow(() -> new ResourceNotFoundException("Author not found for the id:" + authorId));
     }
 
     @Override
     public Author getLoggedInAuthor() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        return authorRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Author not found for the email;"+email));
+        return authorRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Author not found for the email;" + email));
+    }
+
+
+    public Author findAuthorById(Long id) {
+        return authorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Author not found with id:" + id));
     }
 
 
@@ -75,5 +81,11 @@ public class AuthorServiceImpl implements IAuthorService {
         authorRepository.delete(author);
     }
 
+    @Override
+    public boolean existByIdAuthor(Long id) throws NotFoundEx {
+        if (authorRepository.existsById(id)) {
+            return true;
+        }else throw new NotFoundEx("Author not found with id:" + id);
+    }
 
 }

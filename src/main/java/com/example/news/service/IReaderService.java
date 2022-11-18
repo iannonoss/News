@@ -15,4 +15,6 @@ public interface IReaderService {
     void delete(Reader reader);
 
     Reader getUserFromEmail(String email);
+
+     Reader getLoggedInReader();
 }

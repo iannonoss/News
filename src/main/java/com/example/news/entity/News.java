@@ -7,11 +7,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Data
@@ -34,8 +36,14 @@ public class News {
     @NotBlank(message = "Description must be not null")
     private String description;
 
-    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
     private Date date;
+
+    //da fare
+    /*@UpdateTimestamp
+    private Timestamp updatedAt;*/
+
 
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -43,4 +51,11 @@ public class News {
     @JoinColumn(name = "author_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private  Author author;
+
+
+
+    @PrePersist
+    private void onCreate() {
+        date = new Date();
+    }
 }

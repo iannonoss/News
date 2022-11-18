@@ -2,6 +2,7 @@ package com.example.news.service;
 
 import com.example.news.dto.ERole;
 import com.example.news.dto.UserModel;
+import com.example.news.entity.Author;
 import com.example.news.entity.Reader;
 import com.example.news.entity.Role;
 import com.example.news.exception.ItemAlreadyExistsException;
@@ -11,6 +12,9 @@ import com.example.news.repository.ReaderRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -36,10 +40,10 @@ public class ReaderServiceImpl implements IReaderService {
     private IAuthorService IAuthorService;
 
     @Autowired
-    private IUserService IUserService;
+    private IUserService userService;
 
     public Reader createReader(UserModel userModel, ERole setRole) {
-        if (IUserService.existUserByEmail(userModel.getEmail())) {
+        if (userService.existUserByEmail(userModel.getEmail())) {
             throw new ItemAlreadyExistsException
                     ("User is already register with email: "
                             + userModel.getEmail());
@@ -60,7 +64,7 @@ public class ReaderServiceImpl implements IReaderService {
 
     @Override
     public Reader readReader() {
-        Long userId = IUserService.getLoggedInUser().getId();
+        Long userId = userService.getLoggedInUser().getId();
         return readerRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found for the id:"+userId));
     }
 
@@ -84,6 +88,13 @@ public class ReaderServiceImpl implements IReaderService {
     public Reader getUserFromEmail(String email) {
         return readerRepository.findByEmail(email).orElseThrow(
                 () -> new ResourceNotFoundException("User not found with email: " + email));
+    }
+
+
+    public Reader getLoggedInReader() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        return readerRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Reader not found for the email;" + email));
     }
 
 

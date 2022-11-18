@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -29,15 +30,20 @@ public class Subscription {
     private Author author;
 
     @NotNull
-    private Boolean state_subscription;
+    private Boolean stateSubscription;
 
-    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
     private Date start_date;
 
-    @NotNull
     private Date end_date;
 
 
+
+    @PrePersist
+    private void onCreate() {
+        start_date = new Date();
+    }
 
 
 
