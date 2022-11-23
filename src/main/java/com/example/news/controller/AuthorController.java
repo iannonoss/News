@@ -1,5 +1,6 @@
 package com.example.news.controller;
 
+import com.example.news.dto.AuthorProfileResponseDTO;
 import com.example.news.entity.Author;
 import com.example.news.exception.ResourceNotFoundException;
 import com.example.news.service.IAuthorService;
@@ -22,9 +23,9 @@ public class AuthorController extends BaseController{
     }*/
 
     @GetMapping("/profile-author")
-    public Author readProfile(){
+    public AuthorProfileResponseDTO readProfile(){
         Author user = getAuthorLoggedId();
-        return IAuthorService.getAuthorFromEmail(user.getEmail());
+        return IAuthorService.readAuthor(user);
     }
 
     @DeleteMapping("/deactivateAuthor")

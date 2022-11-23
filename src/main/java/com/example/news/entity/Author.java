@@ -1,16 +1,18 @@
 package com.example.news.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
 
-@ToString
 @Data
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -26,10 +28,8 @@ public class Author extends User {
 
     private BigDecimal subscription_price;
 
-    @ToString.Exclude
+
     @OneToMany(mappedBy = "author")
-    private Set<Subscription> subscriptions;
-
-
+    private Collection<Subscription> subscriptions;
 
 }

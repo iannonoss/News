@@ -1,6 +1,7 @@
 package com.example.news.service;
 
 import com.example.news.dto.AuthorModel;
+import com.example.news.dto.AuthorProfileResponseDTO;
 import com.example.news.entity.Author;
 import com.example.news.exception.NotFoundEx;
 
@@ -8,7 +9,7 @@ public interface IAuthorService {
 
     Author createAuthor(AuthorModel authorModel);
 
-    Author readAuthor(Long authorId);
+    AuthorProfileResponseDTO readAuthor(Author author);
 
     Author getLoggedInAuthor();
 

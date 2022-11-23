@@ -1,15 +1,21 @@
 package com.example.news.service;
 
+import com.example.news.dto.NewsResponseDto;
 import com.example.news.entity.Author;
 import com.example.news.entity.News;
+import com.example.news.entity.Reader;
+import com.example.news.entity.Subscription;
+import com.example.news.exception.CategoryNotFoundException;
 import com.example.news.exception.MismatchedIdException;
 import com.example.news.exception.ResourceNotFoundException;
 import com.example.news.repository.NewsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -21,24 +27,40 @@ public class NewsServiceImpl implements INewsService {
     @Autowired
     private IAuthorService IAuthorService;
 
-    @Autowired
-    private IReaderService IReaderService;
 
-
-    @Override
-    public Page<News> getAllNews(Pageable page) {
-        return newsRepository.findAll(page);
+    //READER OPERATION
+    public Page<NewsResponseDto> getSubNews(Reader reader, Pageable page) {
+           return newsRepository.findNewsSubbed(reader, page);
     }
 
     @Override
-    public News getNewsById(Long id) {
-        Optional<News> news = newsRepository.findById(id);
-        if (news.isPresent()) {
-            return news.get();
-        }
-        throw new ResourceNotFoundException("Resources is not found for the id ->"+id);
+    public Page<NewsResponseDto> readByCategory(Reader reader, String category, Pageable page) {
+        Page<NewsResponseDto> filterByCategory = newsRepository.findByCategory(reader,category, page);
+        if (filterByCategory.hasContent()) {
+            return filterByCategory;
+        }throw new CategoryNotFoundException("Category not found");
+
     }
 
+
+/*
+    private NewsResponseDto buildResponseDTO(News news){
+        NewsResponseDto newsResponseDto = new NewsResponseDto();
+
+        newsResponseDto.setTitle(news.getTitle());
+        newsResponseDto.setCategory(news.getCategory());
+        newsResponseDto.setDescription(news.getDescription());
+        newsResponseDto.setDate(news.getDate());
+        newsResponseDto.setAuthor(news.getAuthor().getName());
+
+        return newsResponseDto;
+
+    }
+*/
+
+
+
+    //AUTHOR OPERATION OR MODERATOR
     @Override
     public News saveAllNewsDetails(News news) {
         news.setAuthor(IAuthorService.getLoggedInAuthor());
@@ -71,6 +93,9 @@ public class NewsServiceImpl implements INewsService {
 
     }
 
+    private boolean checkModifier(Long id){
+        return Objects.equals(id, IAuthorService.getLoggedInAuthor().getId());
+    }
 
     @Override
     public void deleteNewsById(Long id) {
@@ -78,11 +103,9 @@ public class NewsServiceImpl implements INewsService {
         newsRepository.delete(news);
     }
 
+    //ADMIN/MODERATOR  OPERATION
 
-    @Override
-    public List<News> readByCategory(String category, Pageable page) {
-        return newsRepository.findByCategory(category, page).toList();
-    }
+
 
     @Override
     public List<News> readNewsByAuthor(Long id, Pageable page) {
@@ -90,9 +113,21 @@ public class NewsServiceImpl implements INewsService {
         return newsRepository.findByAuthor(author, page).toList();
     }
 
+    @Override
+    public Page<NewsResponseDto> getAllNews(Pageable page) {
+        return newsRepository.findAllNews(page);
+    }
 
-    private boolean checkModifier(Long id){
-        return Objects.equals(id, IAuthorService.getLoggedInAuthor().getId());
+
+
+
+    @Override
+    public News getNewsById(Long id) {
+        Optional<News> news = newsRepository.findById(id);
+        if (news.isPresent()) {
+            return news.get();
+        }
+        throw new ResourceNotFoundException("Resources is not found for the id ->"+id);
     }
 
 

@@ -7,6 +7,7 @@ import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -17,6 +18,14 @@ public interface SubRepository extends JpaRepository<Subscription,Long> {
 
 
     Optional<Subscription> findByAuthorAndReaderAndStateSubscription(Author author, Reader reader, Boolean value);
+
+
+    List<Subscription> findAllByAuthorId(Long id);
+
+    List<Subscription> findAllByReaderId(Long id);
+
+    List<Subscription> findAllByReaderIdAndStateSubscription(Long id, Boolean value);
+
 
 
 

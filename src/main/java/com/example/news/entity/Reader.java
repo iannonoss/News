@@ -1,11 +1,13 @@
 package com.example.news.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Set;
 @ToString
 @Data
@@ -19,7 +21,6 @@ public class Reader extends User {
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
 
-    @ToString.Exclude
     @OneToMany(mappedBy = "reader")
-    private Set<Subscription> subscriptions;
+    private Collection<Subscription> subscriptions;
 }

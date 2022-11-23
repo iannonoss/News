@@ -1,5 +1,6 @@
 package com.example.news.controller;
 
+import com.example.news.dto.NewsResponseDto;
 import com.example.news.entity.News;
 import com.example.news.exception.ResourceNotFoundException;
 import com.example.news.repository.NewsRepository;
@@ -14,14 +15,20 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-public class NewsController {
+public class NewsController extends BaseController{
     @Autowired
     private INewsService newsService;
 
     @GetMapping("/list_of_news")
-    public List<News> getAllNews(Pageable page){
+    public List<NewsResponseDto> getAllNewsBySub(Pageable page){
+        return  newsService.getSubNews(getUserLoggedId(),page).toList();
+    }
+
+    @GetMapping("admin/list_of_news")
+    public List<NewsResponseDto> getAllNews(Pageable page){
         return  newsService.getAllNews(page).toList();
     }
+
 
     @GetMapping("/news/{id}")
     public News getNewsById(@PathVariable Long id){
@@ -62,8 +69,8 @@ public class NewsController {
 
 
     @GetMapping("/news/category")
-    public List<News> getAllNewsByCategory(@RequestParam String category, Pageable page ){
-        return newsService.readByCategory(category, page);
+    public List<NewsResponseDto> getAllNewsByCategory(@RequestParam String category, Pageable page ){
+        return newsService.readByCategory(getUserLoggedId(),category, page).toList();
     }
 
    /* @GetMapping("/news/category")
