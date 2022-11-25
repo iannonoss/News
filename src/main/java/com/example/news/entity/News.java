@@ -44,8 +44,6 @@ public class News {
     /*@UpdateTimestamp
     private Timestamp updatedAt;*/
 
-
-
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "author_id", nullable = false)

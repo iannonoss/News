@@ -11,6 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class NewsResponseDto {
 
+
     private String title;
 
     private String category;

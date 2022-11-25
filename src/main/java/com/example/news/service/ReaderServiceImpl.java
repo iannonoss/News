@@ -83,6 +83,7 @@ public class ReaderServiceImpl implements IReaderService {
         readerProfileResponseDTO.setSurname(reader.getSurname());
         readerProfileResponseDTO.setEmail(reader.getEmail());
         readerProfileResponseDTO.setBirthDate(reader.getBirthDate());
+        readerProfileResponseDTO.setBalance(reader.getBalance());
         readerProfileResponseDTO.setRoles(reader.getRoles());
         readerProfileResponseDTO.setSubscriptions(new ArrayList<>());
         List<Subscription> subscriptions = subRepository.findAllByReaderId(readerProfileResponseDTO.getId());

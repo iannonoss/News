@@ -7,10 +7,12 @@ import com.example.news.entity.Author;
 import com.example.news.entity.Reader;
 import com.example.news.entity.Subscription;
 import com.example.news.exception.NotFoundEx;
+import com.example.news.exception.UnauthorizedInstructionException;
 import com.example.news.repository.SubRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -38,7 +40,8 @@ public class SubServiceImpl implements ISubService {
         if (authorService.existByIdAuthor(subModel.getIdAuthor())) {
             Author author = authorService.findAuthorById(subModel.getIdAuthor());
             Reader reader = readerService.getLoggedInReader();
-
+            verifyBalanceUser(reader, author.getSubscription_price());
+            reader.setBalance(BigDecimal.valueOf(reader.getBalance().doubleValue() - author.getSubscription_price().doubleValue()));
             if(subRepository.existsByAuthorAndReaderAndStateSubscription(author, reader, true)){
                 throw new Error("You cannot subscribe to an author you are already subscribed to");
             }
@@ -77,6 +80,12 @@ public class SubServiceImpl implements ISubService {
         subResponseDTO.setStart_date(save.getStart_date());
         subResponseDTO.setEnd_Date(save.getEnd_date());
         return subResponseDTO;
+    }
+
+    private void verifyBalanceUser(Reader reader, BigDecimal price) {
+        if (reader.getBalance().longValue() < price.longValue()) {
+            throw new UnauthorizedInstructionException("You don't have enough money");
+        }
     }
 
 

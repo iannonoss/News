@@ -6,6 +6,7 @@ import com.example.news.entity.Reader;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Date;
 import java.util.List;
 
 public interface INewsService {
@@ -14,7 +15,7 @@ public interface INewsService {
 
     News getNewsById(Long id);
 
-    News saveAllNewsDetails(News news);
+    NewsResponseDto saveAllNewsDetails(News news);
 
     News updateNewsDetails(News news, Long id);
 
@@ -32,13 +33,7 @@ public interface INewsService {
 
      Page<NewsResponseDto> getSubNews(Reader reader, Pageable page);
 
-
-/*
-    List<News> readByCategory(String category, Pageable page);
-
-    List<News> readByAuthor(String author, Pageable page);
-
-    List<News> readByDate(Date startDate, Date endDate, Pageable page);*/
+    List<News> readByDate(Date startDate, Date endDate, Pageable page);
 
 
 }

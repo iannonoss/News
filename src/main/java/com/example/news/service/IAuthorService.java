@@ -2,8 +2,11 @@ package com.example.news.service;
 
 import com.example.news.dto.AuthorModel;
 import com.example.news.dto.AuthorProfileResponseDTO;
+import com.example.news.dto.AuthorSortPriceResponse;
 import com.example.news.entity.Author;
 import com.example.news.exception.NotFoundEx;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface IAuthorService {
 
@@ -21,6 +24,8 @@ public interface IAuthorService {
 
      Author findAuthorById(Long id);
 
+
+     Page<AuthorSortPriceResponse> sortByPrice(Pageable page);
 
 
 }

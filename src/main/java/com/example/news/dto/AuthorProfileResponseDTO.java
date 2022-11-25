@@ -21,6 +21,10 @@ public class AuthorProfileResponseDTO {
 
     private String email;
 
+    private String bio;
+
+    private String alias;
+
     private LocalDate birthDate;
 
     private String category;

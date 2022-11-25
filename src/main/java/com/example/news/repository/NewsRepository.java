@@ -27,7 +27,8 @@ public interface NewsRepository extends JpaRepository<News, Long> {
     Page<NewsResponseDto> findAllNews(Pageable page);
 
 
-    //Page<News> findByDateBetween( Date startDate, Date endDate, Pageable page);
+    @Query(value = Queries.getNewsByDataBetween)
+    Page<News> findByDateBetween( Date startDate, Date endDate, Pageable page);
 
     @Query(value = Queries.getSubbedNews)
     Page<NewsResponseDto> findNewsSubbed(Reader reader, Pageable page);

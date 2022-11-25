@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
@@ -23,6 +24,8 @@ public class ReaderProfileResponseDTO {
     private String email;
 
     private LocalDate birthDate;
+
+    private BigDecimal balance;
 
     private Set<Role> roles = new HashSet<>();
 

@@ -30,7 +30,10 @@ public class AuthorModel {
     private LocalDate birthDate;
 
     @NotBlank
-    private String biography;
+    private String bio;
+
+    @NotNull(message = "Please alias")
+    private String alias;
 
     @NotBlank(message = "Category should not be null")
     private String category;

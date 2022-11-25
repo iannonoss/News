@@ -7,6 +7,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Set;
@@ -27,6 +28,9 @@ public class UserModel {
     @NotNull(message = "Please enter password")
     @Size(min = 5, message = "Password should be at least 5 characters")
     private String password;
+
+    @NotNull
+    private BigDecimal balance;
 
     @NotNull
     private LocalDate birthDate;

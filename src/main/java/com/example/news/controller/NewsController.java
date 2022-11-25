@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -43,7 +44,7 @@ public class NewsController extends BaseController{
 
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping("/news")
-    public News saveNews(@Valid @RequestBody News news){
+    public NewsResponseDto saveNews(@Valid @RequestBody News news){
         return newsService.saveAllNewsDetails(news);
     }
 
@@ -82,6 +83,7 @@ public class NewsController extends BaseController{
     public List<News> getNewsByAuthor(@RequestParam String author, Pageable page){
         return newsService.readByAuthor(author, page);
     }
+*/
 
     @GetMapping("/news/date")
     public List<News> getExpenseByDateBetween(@RequestParam (required = false) Date starDate,
@@ -89,7 +91,7 @@ public class NewsController extends BaseController{
                                               Pageable page){
 
         return newsService.readByDate(starDate, endDate, page);
-    }*/
+    }
 
 
 

@@ -15,10 +15,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class NewsServiceImpl implements INewsService {
@@ -42,6 +39,17 @@ public class NewsServiceImpl implements INewsService {
 
     }
 
+    @Override
+    public List<News> readByDate(Date startDate, Date endDate, Pageable page) {
+        if(startDate == null ){
+            startDate = new Date(0);
+        }
+        if (endDate == null){
+            endDate = new Date(System.currentTimeMillis());
+        }
+        return newsRepository.findByDateBetween(startDate, endDate, page).toList();
+    }
+
 
 /*
     private NewsResponseDto buildResponseDTO(News news){
@@ -62,9 +70,21 @@ public class NewsServiceImpl implements INewsService {
 
     //AUTHOR OPERATION OR MODERATOR
     @Override
-    public News saveAllNewsDetails(News news) {
+    public NewsResponseDto saveAllNewsDetails(News news) {
         news.setAuthor(IAuthorService.getLoggedInAuthor());
-        return newsRepository.save(news);
+        newsRepository.save(news);
+        return buildDTO(news);
+
+    }
+
+    private NewsResponseDto buildDTO(News news) {
+        NewsResponseDto newsResponseDto = new NewsResponseDto();
+        newsResponseDto.setTitle(news.getTitle());
+        newsResponseDto.setCategory(news.getCategory());
+        newsResponseDto.setDescription(news.getDescription());
+        newsResponseDto.setAuthor(news.getAuthor().getAlias());
+        newsResponseDto.setDate(news.getDate());
+        return newsResponseDto;
     }
 
 
@@ -120,7 +140,6 @@ public class NewsServiceImpl implements INewsService {
 
 
 
-
     @Override
     public News getNewsById(Long id) {
         Optional<News> news = newsRepository.findById(id);
@@ -147,17 +166,9 @@ public class NewsServiceImpl implements INewsService {
     public List<News> readByAuthor(String author, Pageable page) {
         return newsRepository.findByAuthor(author, page).toList();
     }
-
-    @Override
-    public List<News> readByDate(Date startDate, Date endDate, Pageable page) {
-        if(startDate == null ){
-            startDate = new Date(0);
-        }
-        if (endDate == null){
-            endDate = new Date(System.currentTimeMillis());
-        }
-        return newsRepository.findByDateBetween(startDate, endDate, page).toList();
-    }
 */
+
+
+
 
 }

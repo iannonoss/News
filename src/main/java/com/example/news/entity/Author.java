@@ -24,7 +24,11 @@ public class Author extends User {
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
 
+    private String bio;
+
     private String category;
+
+    private String alias;
 
     private BigDecimal subscription_price;
 
