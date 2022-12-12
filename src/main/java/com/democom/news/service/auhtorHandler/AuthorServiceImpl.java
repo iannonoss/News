@@ -1,7 +1,8 @@
-package com.democom.news.service;
+package com.democom.news.service.auhtorHandler;
 
 
 import com.democom.news.dto.*;
+import com.democom.news.dto.enums.ERole;
 import com.democom.news.entity.Author;
 import com.democom.news.entity.Role;
 import com.democom.news.entity.Subscription;
@@ -39,26 +40,28 @@ public class AuthorServiceImpl implements IAuthorService {
     private RoleRepository roleRepository;
 
     @Autowired
-    private IUserService IUserService;
-@Autowired
-  SubRepository subRepository;
+    private com.democom.news.service.IUserService IUserService;
+    @Autowired
+    private SubRepository subRepository;
 
     @Override
-    public Author createAuthor(AuthorModel authorModel) {
+    public Author createAuthor(AuthorModel authorModel, ERole setRole) {
         if (IUserService.existUserByEmail(authorModel.getEmail())) {
             throw new ItemAlreadyExistsException("Author is already registered with email:" + authorModel.getEmail());
         }
         Author newAuthor = new Author();
         BeanUtils.copyProperties(authorModel, newAuthor);
         newAuthor.setPassword(passwordEncoder.encode(newAuthor.getPassword()));
-
-        Set<Role> roles = new HashSet<>();
-        Role modRole = roleRepository.findByName(ERole.ROLE_AUTHOR)
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-        roles.add(modRole);
-        newAuthor.setRoles(roles);
+        this.setAuthorRole(setRole, newAuthor);
 
         return authorRepository.save(newAuthor);
+    }
+
+    private void setAuthorRole(ERole role, Author author){
+        Role targetRole = roleRepository.findByName(role).orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        Set<Role> roles = new HashSet<>();
+        roles.add(targetRole);
+        author.setRoles(roles);
     }
 
     @Override
@@ -66,6 +69,8 @@ public class AuthorServiceImpl implements IAuthorService {
         return buildResponseDTO(author);
     }
 
+
+    //TODO
     private AuthorProfileResponseDTO buildResponseDTO(Author author) {
         AuthorProfileResponseDTO authorProfileResponseDTO = new AuthorProfileResponseDTO();
 
@@ -81,6 +86,7 @@ public class AuthorServiceImpl implements IAuthorService {
         authorProfileResponseDTO.setSubscriptions(new ArrayList<>());
         List<Subscription> subscriptions = subRepository.findAllByAuthorId(authorProfileResponseDTO.getId());
         for (Subscription subscription : subscriptions) {
+            //TODO
             SubscriptionResponseDTO subscriptionResponseDTO = new SubscriptionResponseDTO();
             if (subscription.getStateSubscription()){
             subscriptionResponseDTO.setEmail(subscription.getReader().getEmail());
@@ -106,7 +112,7 @@ public class AuthorServiceImpl implements IAuthorService {
     public Author findAuthorById(Long id) {
         return authorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Author not found with id:" + id));
     }
-
+//TODO
     @Override
     public Page<AuthorSortPriceResponseDTO> sortByPrice(Pageable pageable) {
         List<Author> list;
@@ -135,5 +141,7 @@ public class AuthorServiceImpl implements IAuthorService {
             return true;
         } else throw new NotFoundEx("Author not found with id:" + id);
     }
+
+
 
 }

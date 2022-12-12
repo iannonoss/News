@@ -1,4 +1,4 @@
-package com.democom.news.service;
+package com.democom.news.service.authorizationHandler;
 
 import com.democom.news.entity.User;
 import com.democom.news.dto.AuthModel;
@@ -6,24 +6,24 @@ import com.democom.news.dto.LoginResponse;
 import com.democom.news.dto.RefreshTokenRequest;
 import com.democom.news.entity.JwtResponse;
 import com.democom.news.entity.RefreshToken;
+import com.democom.news.exception.UnauthorizedException;
 import com.democom.news.security.AuthService;
 import com.democom.news.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 
 @Service
-public class AuthServiceImpl implements IAuthService{
+public class AuthServiceImpl implements IAuthService {
 
 
 
     @Autowired
-    private IRefreshTokenService IRefreshTokenService;
+    private com.democom.news.service.refreshTokenHandler.IRefreshTokenService IRefreshTokenService;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -32,7 +32,7 @@ public class AuthServiceImpl implements IAuthService{
     private AuthService userDetailsService;
 
     @Autowired
-    private IUserService IUserService;
+    private com.democom.news.service.IUserService IUserService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -40,12 +40,11 @@ public class AuthServiceImpl implements IAuthService{
 
 
     @Override
-    public LoginResponse login(AuthModel authModel) throws Exception {
+    public LoginResponse login(AuthModel authModel) {
         authenticate(authModel.getEmail(), authModel.getPassword());
 
-        final UserDetails userDetails =  userDetailsService.loadUserByUsername(authModel.getEmail());
-        final String token = jwtTokenUtil.generateToken(userDetails);
-
+         UserDetails userDetails =  userDetailsService.loadUserByUsername(authModel.getEmail());
+         String token = jwtTokenUtil.generateToken(userDetails);
 
         User user = IUserService.getUserFromEmail(authModel.getEmail());
         RefreshToken refreshToken = IRefreshTokenService.createRefreshToken(user);
@@ -57,13 +56,13 @@ public class AuthServiceImpl implements IAuthService{
         return loginResponse;
     }
 
-    private void authenticate(String email, String password) throws Exception {
+    private void authenticate(String email, String password) throws UnauthorizedException, BadCredentialsException{
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-        } catch (DisabledException e){
-            throw new Exception("User disabled");
+        } catch (UnauthorizedException e){
+            throw new UnauthorizedException("User disabled");
         } catch (BadCredentialsException e) {
-            throw new Exception("Bad credentials");
+            throw new BadCredentialsException("Bad credentials");
         }
     }
 
@@ -73,6 +72,7 @@ public class AuthServiceImpl implements IAuthService{
         return jwtTokenUtil.generateToken(userDetails);
     }
 
+    //TODO: recupera password & logout + test
 
 
 }

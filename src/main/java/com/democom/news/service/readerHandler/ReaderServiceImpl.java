@@ -1,9 +1,7 @@
-package com.democom.news.service;
+package com.democom.news.service.readerHandler;
 
-import com.democom.news.dto.ERole;
-import com.democom.news.dto.ReaderProfileResponseDTO;
-import com.democom.news.dto.SubscriptionResponseDTO;
-import com.democom.news.dto.UserModel;
+import com.democom.news.dto.*;
+import com.democom.news.dto.enums.ERole;
 import com.democom.news.entity.Reader;
 import com.democom.news.entity.Role;
 import com.democom.news.entity.Subscription;
@@ -12,6 +10,7 @@ import com.democom.news.exception.ResourceNotFoundException;
 import com.democom.news.repository.RoleRepository;
 import com.democom.news.repository.ReaderRepository;
 import com.democom.news.repository.SubRepository;
+import com.democom.news.service.IUserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -115,15 +114,15 @@ public class ReaderServiceImpl implements IReaderService {
     }
 
     @Override
-    public Reader updateReader(UserModel user) {
-        Reader existingReader = readReader();
-        existingReader.setName(user.getName() != null ? user.getName() : existingReader.getName());
-        existingReader.setSurname(user.getSurname() != null ? user.getSurname() : existingReader.getSurname());
-        existingReader.setEmail(user.getEmail() != null ? user.getEmail() : existingReader.getEmail());
-        existingReader.setPassword(user.getPassword() != null ? passwordEncoder.encode(user.getPassword()): existingReader.getPassword());
-        existingReader.setBirthDate(user.getBirthDate() != null ? user.getBirthDate() : existingReader.getBirthDate());
+    public Reader updateReader(Reader reader, Reader oldReader) {
+        oldReader.setName(reader.getName() != null ? reader.getName() : oldReader.getName());
+        oldReader.setSurname(reader.getSurname() != null ? reader.getSurname() : oldReader.getSurname());
+        oldReader.setEmail(reader.getEmail() != null ? reader.getEmail() : oldReader.getEmail());
+        oldReader.setPassword(reader.getPassword() != null ? passwordEncoder.encode(reader.getPassword()): oldReader.getPassword());
+        oldReader.setBirthDate(reader.getBirthDate() != null ? reader.getBirthDate() : oldReader.getBirthDate());
+        oldReader.setBalance(reader.getBalance() != null ? reader.getBalance() : oldReader.getBalance());
 
-        return readerRepository.save(existingReader);
+        return readerRepository.save(oldReader);
     }
 
     public void delete(Reader reader) {
@@ -149,9 +148,13 @@ public class ReaderServiceImpl implements IReaderService {
     }
 
     @Override
-    public Reader addFunds(Reader reader, BigDecimal funds) {
-        reader.setBalance(reader.getBalance().add(funds));
-        return readerRepository.save(reader);
+    public ReaderProfileResponseDTO addFunds(Reader reader, FundsDTO funds) {
+        InputReaderProfileDTO inputProfileDTO = new InputReaderProfileDTO();
+        BigDecimal stake = BigDecimal.valueOf(funds.getMoney());
+        reader.setBalance(reader.getBalance().add(stake));
+        BeanUtils.copyProperties(reader, inputProfileDTO );
+        ReaderProfileResponseDTO responseDTO = new ReaderProfileResponseDTO(inputProfileDTO);
+        return responseDTO;
     }
 
 

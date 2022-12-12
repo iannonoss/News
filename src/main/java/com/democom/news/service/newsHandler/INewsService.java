@@ -1,5 +1,6 @@
-package com.democom.news.service;
+package com.democom.news.service.newsHandler;
 
+import com.democom.news.entity.Author;
 import com.democom.news.entity.Reader;
 import com.democom.news.dto.NewsResponseDto;
 import com.democom.news.entity.News;
@@ -29,7 +30,7 @@ public interface INewsService {
 
     //News readNews();
 
-    List<News> readNewsByAuthor(Long id, Pageable page);
+    List<News> readNewsByAuthor(Author author, Pageable page);
 
      Page<NewsResponseDto> getSubNews(Reader reader, Pageable page);
 

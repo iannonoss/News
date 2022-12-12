@@ -4,7 +4,7 @@ import com.democom.news.dto.SaveSubRequestDTO;
 import com.democom.news.dto.SubResponseDTO;
 import com.democom.news.dto.SubsDTO;
 import com.democom.news.exception.NotFoundEx;
-import com.democom.news.service.ISubService;
+import com.democom.news.service.subscriptionHandler.ISubService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -27,7 +27,7 @@ public class SubController extends BaseController{
     @PostMapping("/submit-subscription/{id}")
     public ResponseEntity<SubResponseDTO>saveSub(@PathVariable(value = "id") Long id) throws NotFoundEx, ParseException {
         SaveSubRequestDTO subModel = new SaveSubRequestDTO(id, getUserLoggedId().getId());
-        return new ResponseEntity<SubResponseDTO>(subService.createSub(subModel), HttpStatus.CREATED);
+        return new ResponseEntity<SubResponseDTO>(subService.createSub(subModel, getUserLoggedId()), HttpStatus.CREATED);
     }
 
     @GetMapping("/author/listOfAuthorSub/{id}")

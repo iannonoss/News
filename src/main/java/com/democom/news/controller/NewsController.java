@@ -3,7 +3,7 @@ package com.democom.news.controller;
 import com.democom.news.dto.NewsResponseDto;
 import com.democom.news.entity.News;
 import com.democom.news.exception.ResourceNotFoundException;
-import com.democom.news.service.INewsService;
+import com.democom.news.service.newsHandler.INewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -35,11 +35,10 @@ public class NewsController extends BaseController{
           return   newsService.getNewsById(id);
     }
 
-    @GetMapping("/author/newsList/{id}")
-    public ResponseEntity<List<News>> readNews(@PathVariable Long id, Pageable pageable){
-        return  new ResponseEntity<>(newsService.readNewsByAuthor(id, pageable), HttpStatus.OK);
+    @GetMapping("/author/newsList")
+    public ResponseEntity<List<News>> readNews(Pageable pageable){
+        return  new ResponseEntity<>(newsService.readNewsByAuthor(getAuthorLoggedId(), pageable), HttpStatus.OK);
     }
-
 
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping("/news")

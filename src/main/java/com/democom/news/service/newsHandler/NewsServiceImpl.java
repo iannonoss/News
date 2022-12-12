@@ -1,4 +1,4 @@
-package com.democom.news.service;
+package com.democom.news.service.newsHandler;
 
 import com.democom.news.entity.Author;
 import com.democom.news.entity.Reader;
@@ -20,7 +20,7 @@ public class NewsServiceImpl implements INewsService {
     @Autowired
     private NewsRepository newsRepository;
     @Autowired
-    private IAuthorService IAuthorService;
+    private com.democom.news.service.auhtorHandler.IAuthorService IAuthorService;
 
 
     //READER OPERATION
@@ -126,8 +126,7 @@ public class NewsServiceImpl implements INewsService {
 
 
     @Override
-    public List<News> readNewsByAuthor(Long id, Pageable page) {
-        Author author = IAuthorService.getLoggedInAuthor();
+    public List<News> readNewsByAuthor(Author author, Pageable page) {
         return newsRepository.findByAuthor(author, page).toList();
     }
 
@@ -135,7 +134,6 @@ public class NewsServiceImpl implements INewsService {
     public Page<NewsResponseDto> getAllNews(Pageable page) {
         return newsRepository.findAllNews(page);
     }
-
 
 
     @Override

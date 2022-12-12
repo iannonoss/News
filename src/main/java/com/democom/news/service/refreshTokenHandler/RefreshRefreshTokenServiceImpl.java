@@ -1,4 +1,4 @@
-package com.democom.news.service;
+package com.democom.news.service.refreshTokenHandler;
 
 import com.democom.news.entity.User;
 import com.democom.news.exception.ResourceNotFoundException;

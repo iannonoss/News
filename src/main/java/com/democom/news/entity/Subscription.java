@@ -1,6 +1,8 @@
 package com.democom.news.entity;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -21,7 +23,6 @@ public class Subscription {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "reader_id")
-
     private Reader reader;
 
 

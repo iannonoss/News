@@ -1,6 +1,6 @@
 package com.democom.news.config;
 
-import com.democom.news.dto.ERole;
+import com.democom.news.dto.enums.ERole;
 import com.democom.news.entity.Role;
 import com.democom.news.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;

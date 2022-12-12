@@ -2,11 +2,12 @@ package com.democom.news.controller;
 
 
 import com.democom.news.dto.*;
+import com.democom.news.dto.enums.ERole;
 import com.democom.news.entity.Author;
 import com.democom.news.entity.Reader;
-import com.democom.news.service.IAuthService;
+import com.democom.news.service.authorizationHandler.IAuthService;
 import com.democom.news.entity.JwtResponse;
-import com.democom.news.service.IReaderService;
+import com.democom.news.service.readerHandler.IReaderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +21,10 @@ import javax.validation.Valid;
 public class AuthController {
 
     @Autowired
-    private IReaderService userService;
+    private IReaderService readerService;
 
     @Autowired
-    private com.democom.news.service.IAuthorService IAuthorService;
+    private com.democom.news.service.auhtorHandler.IAuthorService IAuthorService;
 
     @Autowired
     private IAuthService authService;
@@ -37,16 +38,16 @@ public class AuthController {
 
     @PostMapping("/register-user")
     public ResponseEntity<Reader> saveUser(@Valid @RequestBody UserModel userModel){
-        return new ResponseEntity<Reader>(userService.createReader(userModel, ERole.ROLE_USER ), HttpStatus.CREATED);
+        return new ResponseEntity<Reader>(readerService.createReader(userModel, ERole.ROLE_USER ), HttpStatus.CREATED);
     }
     @PostMapping("/register-mod")
     public ResponseEntity<Reader> saveMod(@Valid @RequestBody UserModel userModel){
-        return new ResponseEntity<Reader>(userService.createReader(userModel, ERole.ROLE_MODERATOR ), HttpStatus.CREATED);
+        return new ResponseEntity<Reader>(readerService.createReader(userModel, ERole.ROLE_MODERATOR ), HttpStatus.CREATED);
     }
 
     @PostMapping("/register-author")
     public ResponseEntity<Author> saveAuthor(@Valid @RequestBody AuthorModel authorModel){
-        return new ResponseEntity<Author>(IAuthorService.createAuthor(authorModel), HttpStatus.CREATED);
+        return new ResponseEntity<Author>(IAuthorService.createAuthor(authorModel, ERole.ROLE_AUTHOR), HttpStatus.CREATED);
     }
 
     @PostMapping("/refresh-token")

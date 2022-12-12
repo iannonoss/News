@@ -38,4 +38,13 @@ public class ReaderProfileResponseDTO {
         this.surname = surname;
         this.email = email;
     }
+
+    public ReaderProfileResponseDTO(InputReaderProfileDTO inputProfileDTO) {
+        this.id = inputProfileDTO.getId();
+        this.name = inputProfileDTO.getName();
+        this.surname = inputProfileDTO.getSurname();
+        this.email =inputProfileDTO.getEmail();
+        this.balance = inputProfileDTO.getBalance();
+        this.birthDate = inputProfileDTO.getBirthDate();
+    }
 }

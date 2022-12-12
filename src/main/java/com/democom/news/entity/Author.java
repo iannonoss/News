@@ -28,7 +28,7 @@ public class Author extends User {
     private BigDecimal subscription_price;
 
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
     private Collection<Subscription> subscriptions;
 
 }

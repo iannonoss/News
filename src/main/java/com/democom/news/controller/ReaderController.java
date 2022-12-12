@@ -1,10 +1,10 @@
 package com.democom.news.controller;
 
+import com.democom.news.dto.FundsDTO;
 import com.democom.news.entity.Reader;
 import com.democom.news.dto.ReaderProfileResponseDTO;
-import com.democom.news.dto.UserModel;
 import com.democom.news.exception.ResourceNotFoundException;
-import com.democom.news.service.IReaderService;
+import com.democom.news.service.readerHandler.IReaderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -29,8 +29,9 @@ public class ReaderController extends BaseController{
     }
 
     @PutMapping("/profile")
-    public  ResponseEntity<Reader> update(@RequestBody UserModel user){
-        return new ResponseEntity<Reader>(readerService.updateReader(user), HttpStatus.OK);
+    public  ResponseEntity<Reader> update(@RequestBody Reader reader){
+        Reader oldReader = getUserLoggedId();
+        return new ResponseEntity<Reader>(readerService.updateReader(reader, oldReader), HttpStatus.OK);
     }
 
     @DeleteMapping("/deactivate")
@@ -45,11 +46,11 @@ public class ReaderController extends BaseController{
     }
 
 
-    //da rivedere e fare patch di ogni cosa
+    //TODO: fare patch di ogni cosa
+
     @PatchMapping("reader/addFounds")
-    public  ResponseEntity<Reader> addFundsOfReader(@RequestBody BigDecimal funds) {
-        Reader reader = getUserLoggedId();
-        return new ResponseEntity<Reader>(readerService.addFunds(reader, funds), HttpStatus.GONE);
+    public  ResponseEntity<ReaderProfileResponseDTO> addFundsOfReader(@RequestBody FundsDTO funds) {
+        return new ResponseEntity<ReaderProfileResponseDTO>(readerService.addFunds(getUserLoggedId(), funds), HttpStatus.OK);
     }
 
 }

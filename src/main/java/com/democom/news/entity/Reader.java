@@ -25,6 +25,6 @@ public class Reader extends User {
     @NotNull
     private BigDecimal balance;
 
-    @OneToMany(mappedBy = "reader")
+    @OneToMany(mappedBy = "reader", fetch = FetchType.EAGER)
     private Collection<Subscription> subscriptions;
 }

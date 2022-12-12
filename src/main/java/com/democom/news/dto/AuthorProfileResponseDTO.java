@@ -27,7 +27,6 @@ public class AuthorProfileResponseDTO {
 
     private BigDecimal subscription_price;
 
-
     private Collection<SubscriptionResponseDTO> subscriptions;
 
 }

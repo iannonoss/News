@@ -1,13 +1,12 @@
-package com.democom.news.service;
+package com.democom.news.service.readerHandler;
 
-import com.democom.news.dto.ERole;
+import com.democom.news.dto.enums.ERole;
+import com.democom.news.dto.FundsDTO;
 import com.democom.news.dto.ReaderProfileResponseDTO;
 import com.democom.news.dto.UserModel;
 import com.democom.news.entity.Reader;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import java.math.BigDecimal;
 
 public interface IReaderService {
 
@@ -17,7 +16,7 @@ public interface IReaderService {
 
     ReaderProfileResponseDTO readProfile(Reader reader);
 
-     Reader updateReader( UserModel user);
+     Reader updateReader(Reader reader, Reader oldReader);
 
     void delete(Reader reader);
 
@@ -27,5 +26,5 @@ public interface IReaderService {
 
      Page<ReaderProfileResponseDTO> getAllReader(Pageable page);
 
-     Reader addFunds(Reader reader, BigDecimal funds);
+     ReaderProfileResponseDTO addFunds(Reader reader, FundsDTO funds);
 }

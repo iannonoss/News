@@ -1,4 +1,4 @@
-package com.democom.news.service;
+package com.democom.news.service.subscriptionHandler;
 
 
 import com.democom.news.dto.SaveSubRequestDTO;
@@ -10,6 +10,8 @@ import com.democom.news.entity.Subscription;
 import com.democom.news.exception.NotFoundEx;
 import com.democom.news.exception.UnauthorizedInstructionException;
 import com.democom.news.repository.SubRepository;
+import com.democom.news.service.auhtorHandler.IAuthorService;
+import com.democom.news.service.readerHandler.IReaderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -41,10 +43,9 @@ public class SubServiceImpl implements ISubService {
 
 
     @Override
-    public SubResponseDTO createSub(SaveSubRequestDTO subModel) throws NotFoundEx {
+    public SubResponseDTO createSub(SaveSubRequestDTO subModel, Reader reader) throws NotFoundEx {
         if (authorService.existByIdAuthor(subModel.getIdAuthor())) {
             Author author = authorService.findAuthorById(subModel.getIdAuthor());
-            Reader reader = readerService.getLoggedInReader();
             verifyBalanceUser(reader, author.getSubscription_price());
             reader.setBalance(BigDecimal.valueOf(reader.getBalance().doubleValue() - author.getSubscription_price().doubleValue()));
             if(subRepository.existsByAuthorAndReaderAndStateSubscription(author, reader, true)){

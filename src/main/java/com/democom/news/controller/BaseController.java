@@ -14,9 +14,9 @@ public class BaseController {
     IAuthenticationFacade authenticationFacade;
 
     @Autowired
-    private com.democom.news.service.IReaderService IReaderService;
+    private com.democom.news.service.readerHandler.IReaderService IReaderService;
     @Autowired
-    private com.democom.news.service.IAuthorService IAuthorService;
+    private com.democom.news.service.auhtorHandler.IAuthorService IAuthorService;
 
     protected Reader getUserLoggedId(){
         Authentication authentication = authenticationFacade.getAuthentication();

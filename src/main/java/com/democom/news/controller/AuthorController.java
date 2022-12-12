@@ -18,7 +18,7 @@ import java.util.List;
 public class AuthorController extends BaseController {
 
     @Autowired
-    private com.democom.news.service.IAuthorService authorService;
+    private com.democom.news.service.auhtorHandler.IAuthorService authorService;
 
     @GetMapping("/profile-author")
     public AuthorProfileResponseDTO readProfile(){

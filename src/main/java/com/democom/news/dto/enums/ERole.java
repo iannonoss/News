@@ -1,4 +1,4 @@
-package com.democom.news.dto;
+package com.democom.news.dto.enums;
 
 public enum ERole {
     ROLE_USER,

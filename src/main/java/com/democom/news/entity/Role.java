@@ -1,6 +1,6 @@
 package com.democom.news.entity;
 
-import com.democom.news.dto.ERole;
+import com.democom.news.dto.enums.ERole;
 
 import javax.persistence.*;
 

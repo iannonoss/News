@@ -24,4 +24,8 @@ public class Queries {
             "AND ?2 ";
 
 
+    public static  final  String getRoleByName = "SELECT new com.democom.news.entity.Role(r.name) " +
+            "FROM Role r " +
+            "WHERE r.name = ?1 ";
+
 }
