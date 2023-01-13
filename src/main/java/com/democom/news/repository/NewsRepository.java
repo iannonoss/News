@@ -21,7 +21,7 @@ public interface NewsRepository extends JpaRepository<News, Long> {
 
     Page<News> findByAuthor(Author author, Pageable pageable);
 
-    @Query(value = "SELECT new com.democom.news.dto.NewsResponseDto(n.title ,n.category ,n.description ,n.date ,n.author.name) FROM News n ")
+    @Query(value = "SELECT new com.democom.news.dto.NewsResponseDto(n.title ,n.category ,n.description ,n.publicationDate ,n.author.name) FROM News n ")
     Page<NewsResponseDto> findAllNews(Pageable page);
 
 

@@ -1,0 +1,6 @@
+insert into ROLES(NAME)
+VALUES ('ROLE_USER');
+insert into ROLES (NAME)
+VALUES ('ROLE_MODERATOR');
+insert into ROLES (NAME)
+VALUES ('ROLE_AUTHOR');

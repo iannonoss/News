@@ -81,7 +81,7 @@ public class NewsServiceImpl implements INewsService {
         newsResponseDto.setCategory(news.getCategory());
         newsResponseDto.setDescription(news.getDescription());
         newsResponseDto.setAuthor(news.getAuthor().getAlias());
-        newsResponseDto.setDate(news.getDate());
+        newsResponseDto.setPublicationDate(news.getPublicationDate());
         return newsResponseDto;
     }
 

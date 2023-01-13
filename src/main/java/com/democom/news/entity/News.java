@@ -1,25 +1,24 @@
 package com.democom.news.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
-@Data
+@ToString
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "tbl_news")
 public class News {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @NotBlank(message = "Title must be not null")
@@ -30,26 +29,26 @@ public class News {
     private String category;
 
     @NotBlank(message = "Description must be not null")
+    @Lob
     private String description;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
-    private Date date;
+    private Date publicationDate;
 
     //da fare
     /*@UpdateTimestamp
     private Timestamp updatedAt;*/
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "author_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "author_id")
     private  Author author;
 
 
 
     @PrePersist
     private void onCreate() {
-        date = new Date();
+        publicationDate = new Date();
     }
 }

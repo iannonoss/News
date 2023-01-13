@@ -18,7 +18,7 @@ public class NewsResponseDto {
 
     private String description;
 
-    private Date date;
+    private Date publicationDate;
 
     private String author;
 

@@ -67,11 +67,19 @@ public class SubServiceImpl implements ISubService {
         return c.getTime();
     }
 
+    private Date togli() {
+        Date currentDate = new Date();
+        System.out.println(dateFormat.format(currentDate));
+        Calendar c = Calendar.getInstance();
+        c.setTime(currentDate);
+        return c.getTime();
+    }
+
     private Subscription setSubDetails(Author author, Reader reader) {
         Subscription subscription = new Subscription();
         subscription.setAuthor(author);
         subscription.setReader(reader);
-        subscription.setEnd_date(addDay());
+        subscription.setEnd_date(addDay() );
         subscription.setStateSubscription(true);
         return subscription;
     }
