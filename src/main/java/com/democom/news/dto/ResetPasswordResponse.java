@@ -6,12 +6,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.Set;
 
 @Data
-public class AuthorModel {
+public class ResetPasswordResponse {
 
     @NotBlank(message = "Please enter name")
     private String name;
@@ -26,21 +23,4 @@ public class AuthorModel {
     @NotNull(message = "Please enter password")
     @Size(min = 5, message = "Password should be at least 5 characters")
     private String password;
-
-    @NotNull
-    private LocalDate birthDate;
-
-    @NotBlank
-    private String bio;
-
-    @NotNull(message = "Please alias")
-    private String alias;
-
-    @NotBlank(message = "Category should not be null")
-    private String category;
-
-    @NotNull(message = "Author's subscription price amount should be not null")
-    private BigDecimal subscription_price;
-
-    private Set<String> role;
 }

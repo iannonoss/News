@@ -9,6 +9,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserServiceImpl implements IUserService {
 
@@ -33,4 +35,16 @@ public class UserServiceImpl implements IUserService {
         return userRepository.findByEmail(email).orElseThrow(
                 () -> new ResourceNotFoundException("User not found with email: " + email));
     }
+
+    @Override
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
+
+
+    @Override
+    public Optional<User> getUserFromPasswordToken(String code) {
+        return userRepository.findByResetPasswordCode(code);
+    }
+
 }

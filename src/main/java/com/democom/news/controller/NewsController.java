@@ -24,7 +24,7 @@ public class NewsController extends BaseController{
         return  newsService.getSubNews(getUserLoggedId(),page).toList();
     }
 
-    @GetMapping("admin/list_of_news")
+    @GetMapping("/admin/list_of_news")
     public List<NewsResponseDto> getAllNews(Pageable page){
         return  newsService.getAllNews(page).toList();
     }

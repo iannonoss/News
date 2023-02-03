@@ -9,7 +9,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
-/*
+
 
 @Component
 public class SetUpDataConfig implements ApplicationListener<ContextRefreshedEvent> {
@@ -44,4 +44,4 @@ public class SetUpDataConfig implements ApplicationListener<ContextRefreshedEven
 
 
 }
-*/
+
